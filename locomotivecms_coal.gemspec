@@ -22,10 +22,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake',       '~> 13.1'
 
   spec.add_dependency 'httpclient',             '~> 2.8'
-  spec.add_dependency 'faraday',                '~> 1.0'
-  spec.add_dependency 'faraday_middleware',     '~> 1.2'
+  spec.add_dependency 'faraday',                '~> 2.0'
+  spec.add_dependency 'faraday-multipart',      '~> 1.0'
+  spec.add_dependency 'faraday-httpclient',     '~> 2.0'
   spec.add_dependency 'activesupport',          '>= 7.1'
   spec.add_dependency 'mime-types',             '~> 3.5'
 
-  spec.required_ruby_version = ['>= 3.0']
+  spec.required_ruby_version = ['>= 3.3']
 end

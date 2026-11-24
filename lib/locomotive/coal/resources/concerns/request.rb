@@ -95,9 +95,9 @@ module Locomotive::Coal::Resources
         @_connection ||= Faraday.new(url: "#{uri.scheme}://#{uri.host}:#{uri.port}") do |faraday|
           faraday.request     :multipart
           faraday.request     :url_encoded             # form-encode POST params
-          faraday.basic_auth  *uri.userinfo.split(':') if uri.userinfo
+          faraday.request     :authorization, :basic, *uri.userinfo.split(':') if uri.userinfo
 
-          faraday.use         FaradayMiddleware::ParseJson, content_type: /\bjson$/
+          faraday.response    :json, content_type: /\bjson$/
 
           # ENV['no_proxy'] ignored in Faraday.default_adapter (Net::HTTP)
           faraday.adapter :httpclient
