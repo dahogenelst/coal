@@ -1,6 +1,6 @@
 module Locomotive::Coal
 
-  class UploadIO < ::Faraday::UploadIO
+  class UploadIO < ::Faraday::Multipart::FilePart
 
     def initialize(filename_or_io, content_type = nil, filename = nil)
       if filename.blank? && filename_or_io.is_a?(String)

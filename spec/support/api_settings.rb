@@ -1,3 +1,5 @@
+require 'uri'
+
 TEST_API_URI          = URI('http://localhost:3000').freeze
 TEST_API_V3_URI       = URI('http://localhost:3000/locomotive/api/v3').freeze
 TEST_SITE_API_V3_URI  = URI('http://localhost:3000/locomotive/sample/api/v3').freeze
