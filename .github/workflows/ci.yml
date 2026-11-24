@@ -21,7 +21,7 @@ jobs:
       matrix:
         ruby: ['3.3', '4.0']
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
@@ -41,7 +41,7 @@ jobs:
     if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.repository_owner == 'dahogenelst'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           token: ${{ secrets.CASCADE_TOKEN }}  # a PAT, so the push and PR below trigger CI
       - uses: ruby/setup-ruby@v1
