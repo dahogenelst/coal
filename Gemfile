@@ -6,7 +6,6 @@ group :development do
 end
 
 group :test do
-  gem 'rest-client',        '~> 2.1'
 
   gem 'rspec',              '~> 3.13'
   gem 'json_spec',          '~> 1.1'
