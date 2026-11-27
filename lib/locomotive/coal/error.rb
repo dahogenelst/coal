@@ -45,7 +45,16 @@ module Locomotive::Coal
   class TooManyRequestsError < Error; end
   class UnauthorizedError < Error; end
   class ServerSideError < Error; end
-  class TimeoutError < Error; end
+  # raised with the timeout exception, not a response
+  class TimeoutError < Error
+
+    private
+
+    def build_message
+      response.message
+    end
+
+  end
 
 
   class FileTooBigError < Error
