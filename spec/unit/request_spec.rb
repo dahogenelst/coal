@@ -25,6 +25,12 @@ describe Locomotive::Coal::Resources::Concerns::Request do
     expect(a_request(:get, url)).to have_been_made.times(6)
   end
 
+  it 'does not retry a refused connection' do
+    stub_request(:get, url).to_raise(Errno::ECONNREFUSED)
+    expect { resource.ping }.to raise_error Locomotive::Coal::BadRequestError
+    expect(a_request(:get, url)).to have_been_made.once
+  end
+
   describe 'a proxy from the environment' do
 
     around do |example|

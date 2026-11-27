@@ -4,7 +4,6 @@ require 'active_support/deprecation'
 require 'active_support/core_ext'
 require 'faraday'
 require 'faraday/multipart'
-require 'faraday/httpclient'
 require 'mime-types'
 
 module Locomotive
