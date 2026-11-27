@@ -25,22 +25,17 @@ module Locomotive::Coal::Resources
           # Just uncomment following line if you want to trace protocol between wagon & engine live
           # puts "#{parameters}"
           _do_request(action, "#{uri.path}/#{endpoint}.json", parameters)
-        rescue ::Timeout::Error, ::Errno::ETIMEDOUT, Faraday::TimeoutError => e
+        rescue ::Timeout::Error, ::Errno::ETIMEDOUT, Faraday::TimeoutError, Faraday::ConnectionFailed => e
+          # Net::HTTP's connect timeout comes wrapped in a ConnectionFailed
+          if e.is_a?(Faraday::ConnectionFailed) && !(e.wrapped_exception in ::Timeout::Error | ::Errno::ETIMEDOUT)
+            raise Locomotive::Coal::BadRequestError.new(e)
+          end
           if max_count > 0
             puts "\n Warning => timeout detected, attempts left: #{max_count}\n\n"
             max_count -= 1
             retry
           else
             raise Locomotive::Coal::TimeoutError.new(e)
-          end
-        rescue HTTPClient::KeepAliveDisconnected => e
-          if max_count > 0
-            puts "\n Warning => HTTPClient::KeepAliveDisconnected exception detected, attempts left: #{max_count}\n\n"
-            max_count -= 1
-            retry
-          else
-            puts "\n Error => HTTPClient::KeepAliveDisconnected exception detected, attempts left zero... raising exception\n\n"
-            raise HTTPClient::KeepAliveDisconnected.new(e)
           end
         rescue Locomotive::Coal::Error
           raise
@@ -98,9 +93,6 @@ module Locomotive::Coal::Resources
           faraday.request     :authorization, :basic, *uri.userinfo.split(':') if uri.userinfo
 
           faraday.response    :json, content_type: /\bjson$/
-
-          # ENV['no_proxy'] ignored in Faraday.default_adapter (Net::HTTP)
-          faraday.adapter :httpclient
         end
       end
 
